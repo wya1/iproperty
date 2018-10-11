@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'租赁管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'租赁管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/lease/leftnavbar.html",{title:'合同'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+				<%if(shiro.hasPermission("lease:contract:view")){%>
+					<li class="active"><a href="/lease/contract">合同列表</a></li>
+				<%}%>
+				<%if(shiro.hasPermission("lease:contract:edit")){%>
+					<li><a href="/lease/contract/form">合同添加</a></li>
+				<%}%>
+				</ul>
+				
+				<form id="searchForm" class="breadcrumb form-inline" action="/lease/contract" method="post">
+					<div class="form-group form-group-padding">
+						<label for="contractTypeId">合同类型：</label> <input type="text" class="form-control"
+							id="contractTypeId" name="contractTypeId" placeholder="合同类型" value="${contract.contractTypeId!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="name">名称：</label> <input type="text" class="form-control"
+							id="name" name="name" placeholder="名称" value="${contract.name!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="firstParty">甲方：</label> <input type="text" class="form-control"
+							id="firstParty" name="firstParty" placeholder="甲方" value="${contract.firstParty!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="secondParty">乙方：</label> <input type="text" class="form-control"
+							id="secondParty" name="secondParty" placeholder="乙方" value="${contract.secondParty!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="signingDate">签订日期：</label> <input type="text" class="form-control"
+							id="signingDate" name="signingDate" placeholder="签订日期" value="${contract.signingDate!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="effectiveDate">生效日期：</label> <input type="text" class="form-control"
+							id="effectiveDate" name="effectiveDate" placeholder="生效日期" value="${contract.effectiveDate!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="expiredDate">失效日期：</label> <input type="text" class="form-control"
+							id="expiredDate" name="expiredDate" placeholder="失效日期" value="${contract.expiredDate!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="remarks">备注：</label> <input type="text" class="form-control"
+							id="remarks" name="remarks" placeholder="备注" value="${contract.remarks!}">
+					</div>
+					<button type="submit" class="btn btn-primary">查询</button>
+				</form>
+
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-condensed">
+						<tr>
+							<th>名称</th>
+							<th>甲方</th>
+							<th>乙方</th>
+							<th>签订日期</th>
+							<th>生效日期</th>
+							<th>失效日期</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+						<%
+						for(contract in page.records){
+						%>
+						<tr>
+							<td>${contract.name!}</td>
+							<td>${contract.firstParty!}</td>
+							<td>${contract.secondParty!}</td>
+							<td>${contract.signingDate!,dateFormat="yyyy-MM-dd"}</td>
+							<td>${contract.effectiveDate!,dateFormat="yyyy-MM-dd"}</td>
+							<td>${contract.expiredDate!,dateFormat="yyyy-MM-dd"}</td>
+							<td>${contract.remarks!}</td>
+							<td> 
+							<%if(shiro.hasPermission("lease:contract:edit")){%>
+							<a href="/lease/contract/form?id=${contract.id!}">修改</a> 
+							<%}%>
+							<%if(shiro.hasPermission("lease:contract:delete")){%>
+							<a href="javascript:void(0);"
+								onclick="del('/lease/contract/delete?id=${contract.id!}',1);">删除</a>
+							<%}%>
+							</td>
+
+						</tr>
+						<%
+						}
+						%>
+						
+					</table>
+					<% include("/views/layouts/pageNavigation.html",{url:'/lease/contract'}){} %>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

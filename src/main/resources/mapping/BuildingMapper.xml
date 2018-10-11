@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wya1.iproperty.mapper.BuildingMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.wya1.iproperty.entity.Building">
+		<id column="id" property="id" />
+		<result column="record_management_area_id"
+			property="recordManagementAreaId" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="address" property="address" />
+		<result column="remarks" property="remarks" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+	</resultMap>
+
+	<resultMap id="MBaseResultMap"
+		type="com.wya1.iproperty.entity.Building">
+		<id column="id" property="id" />
+		<result column="record_management_area_id"
+			property="recordManagementAreaId" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="address" property="address" />
+		<result column="remarks" property="remarks" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<association property="userInf"
+			javaType="com.wya1.iproperty.entity.UserInf">
+			<id column="user_id" property="id" />
+			<result column="user_inf_name" property="name" />
+			<result column="user_id_card" property="idCard" />
+			<result column="user_tel" property="tel" />
+			<result column="user_picture" property="picture" />
+		</association>
+		<association property="recordManagementArea"
+			javaType="com.wya1.iproperty.entity.RecordManagementArea">
+			<id property="id" column="record_management_area_id" />
+			<result property="name" column="record_management_area_name" />
+		</association>
+	</resultMap>
+
+	<select id="selectBuild" resultMap="MBaseResultMap">
+		select
+		building.id,building.record_management_area_id,building.user_id,building.name,building.address,building.remarks,building.gmt_create,building.gmt_modified,user_inf.name
+		user_inf_name,record_management_area.name record_management_area_name
+		from building LEFT JOIN user_inf on
+		building.user_id=user_inf.id LEFT
+		JOIN record_management_area on
+		record_management_area.id=building.record_management_area_id
+	</select>
+
+	<select id="selectBuildByRecordManagementAreaId"
+		resultMap="MBaseResultMap">
+		select
+		building.id,building.record_management_area_id,building.user_id,building.name,building.address,building.remarks,building.gmt_create,building.gmt_modified,user_inf.name
+		user_inf_name
+		from building LEFT JOIN user_inf on
+		building.user_id=user_inf.id
+		where
+		building.record_management_area_id=#{recordManagementAreaId}
+	</select>
+
+
+</mapper>

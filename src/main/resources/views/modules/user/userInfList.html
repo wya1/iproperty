@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'客户信息管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'客户信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/user/leftnavbar.html",{title:'客户基本信息'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+				<%if(shiro.hasPermission("user:userInf:view")){%>
+					<li class="active"><a href="/user/userInf">客户基本信息列表</a></li>
+				<%}%>
+				<%if(shiro.hasPermission("user:userInf:edit")){%>
+					<li><a href="/user/userInf/form">客户基本信息添加</a></li>
+				<%}%>
+				</ul>
+				
+				<form id="searchForm" class="breadcrumb form-inline" action="/user/userInf" method="post">
+					<div class="form-group form-group-padding">
+						<label for="name">姓名：</label> <input type="text" class="form-control"
+							id="name" name="name" placeholder="姓名">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="idCard">身份证：</label> <input type="text" class="form-control"
+							id="idCard" name="idCard" placeholder="身份证">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="tel">电话：</label> <input type="text" class="form-control"
+							id="tel" name="tel" placeholder="电话">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="picture">图片：</label> <input type="text" class="form-control"
+							id="picture" name="picture" placeholder="图片">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="remarks">备注：</label> <input type="text" class="form-control"
+							id="remarks" name="remarks" placeholder="备注">
+					</div>
+					<button type="submit" class="btn btn-primary">查询</button>
+				</form>
+
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-condensed">
+						<tr>
+							<th>姓名</th>
+							<th>身份证</th>
+							<th>电话</th>
+							<th>图片</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+						<%
+						for(userInf in page.records){
+						%>
+						<tr>
+							<td>${userInf.name!}</td>
+							<td>${userInf.idCard!}</td>
+							<td>${userInf.tel!}</td>
+							<td>${userInf.picture!}</td>
+							<td>${userInf.remarks!}</td>
+							<td> 
+							<%if(shiro.hasPermission("user:userInf:edit")){%>
+							<a href="/user/userInf/form?id=${userInf.id!}">修改</a> 
+							<%}%>
+							<%if(shiro.hasPermission("user:userInf:delete")){%>
+							<a href="javascript:void(0);"
+								onclick="del('/user/userInf/delete?id=${userInf.id!}',1);">删除</a>
+							<%}%>
+							</td>
+
+						</tr>
+						<%
+						}
+						%>
+						
+					</table>
+					<% include("/views/layouts/pageNavigation.html",{url:'/user/userInf'}){} %>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

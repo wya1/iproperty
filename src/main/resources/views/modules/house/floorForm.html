@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'房产信息管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'房产信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/house/leftnavbar.html",{title:'楼层'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/house/floor">楼层列表</a></li>
+					<li class="active"><a href="/house/floor/form">楼层添加</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal" action="/house/floor/save"
+						method="post">
+						<input type="hidden" name="id" value="${floor.id!}">
+						<div class="form-group">
+							<label for="buildingId" class="col-sm-2 control-label">大楼</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${floor.buildingId!}"
+									name="buildingId" id="floor" placeholder="大楼" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="userId" class="col-sm-2 control-label">用户</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${floor.userId!}"
+									name="userId" id="floor" placeholder="用户" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">名称</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${floor.name!}"
+									name="name" id="floor" placeholder="名称" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${floor.remarks!}"
+									name="remarks" id="floor" placeholder="备注" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<input id="btnCancel" class="btn btn-default" type="button" value="返 回"
+									onclick="history.go(-1)" />
+							</div>
+						</div>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

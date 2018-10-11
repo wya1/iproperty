@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'客户信息管理'}){}
+%>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'客户信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3"><%
+				include("/views/modules/user/leftnavbar.html",{title:'车辆信息'}){} %></div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<%if(shiro.hasPermission("user:userCar:view")){%>
+					<li class="active"><a href="/user/userCar">车辆信息列表</a></li> <%}%>
+				</ul>
+
+				<form id="searchForm" class="breadcrumb form-inline" action="/user/userCar"
+					method="post">
+					<div class="form-group form-group-padding">
+						<label for="userId">用户：</label> <input type="text"
+							class="form-control" id="userId" name="userInf.name" placeholder="用户" value="${userCar.userInf.name!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="name">名称：</label> <input type="text"
+							class="form-control" id="name" name="name" placeholder="名称" value="${userCar.name!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="plateNumber">车牌号：</label> <input type="text"
+							class="form-control" id="plateNumber" name="plateNumber"
+							placeholder="车牌号" value="${userCar.plateNumber!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="picture">图片：</label> <input type="text"
+							class="form-control" id="picture" name="picture" placeholder="图片" value="${userCar.picture!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="remarks">备注：</label> <input type="text"
+							class="form-control" id="remarks" name="remarks" placeholder="备注" value="${userCar.remarks!}">
+					</div>
+					<button type="submit" class="btn btn-primary">查询</button>
+				</form>
+
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-condensed">
+						<tr>
+							<th>用户</th>
+							<th>名称</th>
+							<th>车牌号</th>
+							<th>图片</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+						<% for(userCar in page.records){ %>
+						<tr>
+							<td><a href="/user/userInf/form?id=${userCar.userInf.id}">${userCar.userInf.name}</a></td>
+							<td>${userCar.name!}</td>
+							<td>${userCar.plateNumber!}</td>
+							<td>${userCar.picture!}</td>
+							<td>${userCar.remarks!}</td>
+							<td><%if(shiro.hasPermission("user:userCar:edit")){%> <a
+								href="/user/userCar/form?id=${userCar.id!}">修改</a> <%}%>
+								<%if(shiro.hasPermission("user:userCar:delete")){%> <a
+								href="javascript:void(0);"
+								onclick="del('/user/userCar/delete?id=${userCar.id!}',1);">删除</a>
+								<%}%>
+							</td>
+
+						</tr>
+						<% } %>
+
+					</table>
+					<% include("/views/layouts/pageNavigation.html",{url:'/user/userCar'}){} %>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

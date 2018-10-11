@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wya1.iproperty.mapper.FloorMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.wya1.iproperty.entity.Floor">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="building_id" property="buildingId" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<resultMap id="MBaseResultMap"
+		type="com.wya1.iproperty.entity.Floor">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="building_id" property="buildingId" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="remarks" property="remarks" />
+		<association property="userInf"
+			javaType="com.wya1.iproperty.entity.UserInf">
+			<id column="user_id" property="id" />
+			<result column="user_inf_name" property="name" />
+			<result column="user_id_card" property="idCard" />
+			<result column="user_tel" property="tel" />
+			<result column="user_picture" property="picture" />
+		</association>
+	</resultMap>
+
+	<select id="selectFloorByBuildingId" resultMap="MBaseResultMap">
+		select
+		floor.id,floor.building_id,floor.user_id,floor.name,floor.remarks,floor.gmt_create,floor.gmt_modified,user_inf.name
+		user_inf_name
+		from floor 
+		LEFT JOIN user_inf on
+		floor.user_id=user_inf.id
+		where
+		floor.building_id=#{buildingId}
+	</select>
+
+</mapper>

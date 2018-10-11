@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wya1.iproperty.mapper.ContractMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wya1.iproperty.entity.Contract">
+    <result column="id" property="id" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modified" property="gmtModified" />
+    <result column="is_deleted" property="isDeleted" />
+        <result column="contract_type_id" property="contractTypeId" />
+        <result column="name" property="name" />
+        <result column="content" property="content" />
+        <result column="electronic_contract_pictures" property="electronicContractPictures" />
+        <result column="first_party" property="firstParty" />
+        <result column="second_party" property="secondParty" />
+        <result column="signing_date" property="signingDate" />
+        <result column="effective_date" property="effectiveDate" />
+        <result column="expired_date" property="expiredDate" />
+        <result column="reminding_ahead_day" property="remindingAheadDay" />
+        <result column="remarks" property="remarks" />
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.wya1.iproperty.mapper.UserMemberFamilyMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.wya1.iproperty.entity.UserMemberFamily">
+		<id column="user_id_a" property="userIdA" />
+		<id column="user_id_b" property="userIdB" />
+		<result column="relationship" property="relationship" />
+	</resultMap>
+
+	<resultMap id="MBaseResultMap"
+		type="com.wya1.iproperty.entity.UserMemberFamily">
+		<result column="user_id_a" property="userIdA" />
+		<result column="user_id_b" property="userIdB" />
+		<result column="relationship" property="relationship" />
+		<association property="userInf"
+			javaType="com.wya1.iproperty.entity.UserInf">
+			<result column="id" property="id" />
+			<result column="gmt_create" property="gmtCreate" />
+			<result column="gmt_modified" property="gmtModified" />
+			<result column="name" property="name" />
+			<result column="id_card" property="idCard" />
+			<result column="tel" property="tel" />
+			<result column="picture" property="picture" />
+			<result column="remarks" property="remarks" />
+		</association>
+	</resultMap>
+
+	<select id="selectByUserId1" resultMap="MBaseResultMap">
+		select
+		user_member_family.user_id_a,user_member_family.user_id_b,user_member_family.relationship,user_inf.id,user_inf.gmt_create,user_inf.gmt_modified,user_inf.name,user_inf.id_card,user_inf.tel,user_inf.picture,user_inf.remarks
+		from user_member_family,user_inf where
+		user_member_family.user_id_a=#{id} and
+		user_inf.id=user_member_family.user_id_b
+	</select>
+	<select id="selectByUserId2" resultMap="MBaseResultMap">
+		select
+		user_member_family.user_id_a,user_member_family.user_id_b,user_member_family.relationship,user_inf.id,user_inf.gmt_create,user_inf.gmt_modified,user_inf.name,user_inf.id_card,user_inf.tel,user_inf.picture,user_inf.remarks
+		from user_member_family,user_inf where
+		user_member_family.user_id_b=#{id} and
+		user_inf.id=user_member_family.user_id_a
+	</select>
+</mapper>

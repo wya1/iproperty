@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.wya1.iproperty.mapper.RecordManagementAreaMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.wya1.iproperty.entity.RecordManagementArea">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="address" property="address" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<resultMap id="MBaseResultMap"
+		type="com.wya1.iproperty.entity.RecordManagementArea">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="address" property="address" />
+		<result column="remarks" property="remarks" />
+		<association property="userInf"
+			javaType="com.wya1.iproperty.entity.UserInf">
+			<id property="id" column="user_id" />
+			<result property="name" column="user_inf_name" />
+		</association>
+	</resultMap>
+
+	<sql id="recordManagementAreaColumns">
+		record_management_area.id,record_management_area.gmt_create,record_management_area.gmt_modified,record_management_area.is_deleted,record_management_area.user_id,record_management_area.name,record_management_area.address,record_management_area.remarks
+	</sql>
+
+	<select id="selectRecordManagementArea"
+		resultMap="MBaseResultMap">
+		select
+		<include refid="recordManagementAreaColumns"/>,user_inf.name
+		user_inf_name
+		from record_management_area LEFT JOIN user_inf ON record_management_area.user_id=user_inf.id
+	</select>
+</mapper>

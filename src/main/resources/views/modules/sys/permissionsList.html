@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'权限管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'权限管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="list-group">
+				<a href="/sys/organization" class="list-group-item">组织机构管理</a>
+					<a href="/sys/role" class="list-group-item">角色管理</a> <a href="/sys/permissions"
+						class="list-group-item active">权限管理</a>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="/sys/permissions">权限列表</a></li>
+					<li><a href="/sys/permissions/form">权限添加</a></li>
+				</ul>
+
+				<div class="table-responsive table-padding-top">
+					<table class="table table-striped table-bordered table-condensed">
+						<tr>
+							<th>权限字符串</th>
+							<th>描述</th>
+							<th>操作</th>
+						</tr>
+						<%
+						for(permissions in page.records){
+						%>
+						<tr>
+							<td>${permissions.permission}</td>
+							<td>${permissions.description}</td>
+							<td><a href="/sys/permissions/form?id=${permissions.id}">修改</a> <a href="javascript:void(0);"
+								onclick="del('/sys/permissions/delete?id=${permissions.id}',1);">删除</a></td></td>
+
+						</tr>
+						<%
+						}
+						%>
+						
+					</table>
+					<% include("/views/layouts/pageNavigation.html",{url:'/sys/permissions'}){} %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

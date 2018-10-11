@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'房产信息管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'房产信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/house/leftnavbar.html",{title:'楼层配置'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/house/floorConfigure">楼层配置列表</a></li>
+					<li class="active"><a href="/house/floorConfigure/form">楼层配置添加</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal" action="/house/floorConfigure/save"
+						method="post">
+						<input type="hidden" name="id" value="${floorConfigure.id!}">
+						<div class="form-group">
+							<label for="floorId" class="col-sm-2 control-label">楼层</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${floorConfigure.floorId!}"
+									name="floorId" id="floorConfigure" placeholder="楼层" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">名称</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${floorConfigure.name!}"
+									name="name" id="floorConfigure" placeholder="名称" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="number" class="col-sm-2 control-label"></label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${floorConfigure.number!}"
+									name="number" id="floorConfigure" placeholder="" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${floorConfigure.remarks!}"
+									name="remarks" id="floorConfigure" placeholder="备注" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<input id="btnCancel" class="btn btn-default" type="button" value="返 回"
+									onclick="history.go(-1)" />
+							</div>
+						</div>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

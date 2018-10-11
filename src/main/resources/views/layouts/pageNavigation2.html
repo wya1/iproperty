@@ -1,0 +1,38 @@
+					<% if(page.pages>0){ %>
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+							<li><a href="${url!}" aria-label="Previous"> <span
+									aria-hidden="true">&laquo;</span>
+							</a></li>
+							<%
+							var start = page.current - 2;
+							if (start < 1) {
+								start = 1;
+							}
+							var end = start + 4;
+							if (end > page.pages) {
+								end = page.pages;
+								if (start != 1) {
+									start = end - 4;
+									if (start < 1) {
+										start = 1;
+									}
+								}
+							}
+							%>
+							<% for(var i=start;i<page.current&&i<=end;i++){ %>
+							<li><a href="${url!}?pageNo=${i}">${i}</a></li>
+							<%}%>
+							<% if(page.current<=end){%>
+							<li class="active"><a href="${url!}?pageNo=${page.current}">${page.current}</a></li>
+							<%}%>
+							
+							<% for(var i=page.current+1;i<=end;i++){ %>
+							<li><a href="${url!}?pageNo=${i}">${i}</a></li>
+							<%}%>
+							<li><a href="${url!}?pageNo=${page.pages}" aria-label="Next"> <span
+									aria-hidden="true">&raquo;</span>
+							</a></li>
+						</ul>
+					</nav>
+					<%}%>

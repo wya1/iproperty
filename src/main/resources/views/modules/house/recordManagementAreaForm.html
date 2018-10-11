@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'房产信息管理'}){}
+%>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'房产信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3"><%
+				include("/views/modules/house/leftnavbar.html",{title:'记录管理区'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/house/recordManagementArea">记录管理区列表</a></li>
+					<li class="active"><a href="/house/recordManagementArea/form">记录管理区${isEmpty(recordManagementArea.id)?"添加":"修改"}</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form id="form" class="form-horizontal"
+						action="/house/recordManagementArea/save" method="post">
+						<input type="hidden" name="id" value="${recordManagementArea.id!}">
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">名称</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${recordManagementArea.name!}"
+									name="name" id="recordManagementArea" placeholder="名称"
+									required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<input id="userId" type="hidden" name="userId"> <label
+								for="userName" class="col-sm-2 control-label">用户</label>
+							<div class="col-sm-5">
+								<input id="userName" type="hidden" class="bigdrop"
+									name="userName" style="width: 99%" value="12343333">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="idCard" class="col-sm-2 control-label">身份证</label>
+							<div class="col-sm-5">
+								<input id="idCard" class="form-control" name="idCard"
+									required="required" disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="address" class="col-sm-2 control-label">地址</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${recordManagementArea.address!}"
+									name="address" id="recordManagementArea" placeholder="地址"
+									required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${recordManagementArea.remarks!}"
+									name="remarks" id="recordManagementArea" placeholder="备注"
+									required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="userCar" class="col-sm-2 control-label">大楼</label>
+							<div class="col-sm-10">
+								<table id="contentTable"
+									class="table table-striped table-bordered table-condensed">
+									<thead>
+										<tr>
+											<th>名称</th>
+											<th>用户</th>
+											<th>地址</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+
+										<% for(building in recordManagementArea.buildings!){ %>
+										<tr>
+											<td>${building.name!}</td>
+											<td><a
+												href="/user/userInf/form?id=${building.userInf.id!}">${building.userInf.name!}</a></td>
+											<td>${building.address!}</td>
+											<td>${building.remarks!}</td>
+											<td><%if(shiro.hasPermission("house:building:edit")){%>
+												<a href="javascript:void(0);"
+												onclick="saveEdit2('/house/recordManagementArea/save2','/house/building/recordManagementArea/form?id=${building.id!}');">修改</a>
+												<%}%> <%if(shiro.hasPermission("house:building:delete")){%>
+												<a href="javascript:void(0);"
+												onclick="del('/house/building/delete?id=${building.id!}',1);">删除</a>
+												<%}%>
+											</td>
+
+										</tr>
+										<%}%>
+									</tbody>
+									<tfoot>
+										<%if(shiro.hasPermission("user:userCar:edit")){%>
+										<tr>
+											<td colspan="5"><a href="javascript:void(0);"
+												onclick="saveEdit('/house/recordManagementArea/save2','/house/building/recordManagementArea/form?recordManagementAreaId=');"
+												class="btn btn-default">新增</a></td>
+										</tr>
+										<%}%>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<a href="/house/recordManagementArea" class="btn btn-default">返
+									回</a>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+	<script type="text/javascript">
+		function movieFormatResult(movie) {
+			var markup = "<table class='movie-result'><tr>";
+			markup += "<td><div >" + movie.name + "</div>";
+			markup += "<div>" + movie.idCard + "</div>";
+			markup += "<div>" + movie.tel + "</div>";
+			markup += "</td></tr></table>"
+			return markup;
+		}
+
+		function movieFormatSelection(movie) {
+			$("#userId").val(movie.id);
+			$("#idCard").val(movie.idCard)
+			//return "标题";
+			return movie.name;
+		}
+		$(document)
+				.ready(
+						function() {
+							$("#userName")
+									.select2(
+											{
+												placeholder : "选择用户",
+												minimumInputLength : 1,
+												ajax : {
+													url : "/user/userInf/list2",
+													dataType : 'json',
+													quietMillis : 100,
+													data : function(term, page) { // page is the one-based page number tracked by Select2
+														return {
+															q : term, //search term
+															page : page, // page number
+														};
+													},
+													results : function(data,
+															page) {
+														var more = (page * data.size) < data.total;
+														return {
+															results : data.records,
+															more : more
+														};
+													}
+												},
+												initSelection : function(
+														element, callback) {
+													var j = "{'idCard':'${recordManagementArea.userInf.idCard!}','name':'${recordManagementArea.userInf.name!}','id':'${recordManagementArea.userId!}'}";
+													var jj = eval("(" + j + ")");
+													callback(jj);
+												},
+												formatResult : movieFormatResult, // omitted for brevity, see the source of this page
+												formatSelection : movieFormatSelection, // omitted for brevity, see the source of this page
+												dropdownCssClass : "bigdrop", // apply css that makes the dropdown taller
+												escapeMarkup : function(m) {
+													return m;
+												} // we do not want to escape markup since we are displaying html in results
+											});
+						});
+	</script>
+</body>
+</html>

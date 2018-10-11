@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'房产信息管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'房产信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/house/leftnavbar.html",{title:'记录管理区配置'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+				<%if(shiro.hasPermission("house:recordManagementAreaConfigure:view")){%>
+					<li class="active"><a href="/house/recordManagementAreaConfigure">记录管理区配置列表</a></li>
+				<%}%>
+				<%if(shiro.hasPermission("house:recordManagementAreaConfigure:edit")){%>
+					<li><a href="/house/recordManagementAreaConfigure/form">记录管理区配置添加</a></li>
+				<%}%>
+				</ul>
+
+				<div class="table-responsive table-padding-top">
+					<table class="table table-striped table-bordered table-condensed">
+						<tr>
+							<th>记录管理区</th>
+							<th>名称</th>
+							<th>数量</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+						<%
+						for(recordManagementAreaConfigure in page.records){
+						%>
+						<tr>
+							<td>${recordManagementAreaConfigure.recordManagementAreaId}</td>
+							<td>${recordManagementAreaConfigure.name}</td>
+							<td>${recordManagementAreaConfigure.number}</td>
+							<td>${recordManagementAreaConfigure.remarks}</td>
+							<td> 
+							<%if(shiro.hasPermission("house:recordManagementAreaConfigure:edit")){%>
+							<a href="/house/recordManagementAreaConfigure/form?id=${recordManagementAreaConfigure.id}">修改</a> 
+							<%}%>
+							<%if(shiro.hasPermission("house:recordManagementAreaConfigure:delete")){%>
+							<a href="javascript:void(0);"
+								onclick="del('/house/recordManagementAreaConfigure/delete?id=${recordManagementAreaConfigure.id}',1);">删除</a>
+							<%}%>
+							</td>
+
+						</tr>
+						<%
+						}
+						%>
+						
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

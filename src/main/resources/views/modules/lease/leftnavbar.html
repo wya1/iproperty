@@ -1,0 +1,8 @@
+				<div class="list-group">
+					<%if(shiro.hasPermission("house:recordManagementArea:view")){%>
+					<a href="/lease/contract" class="list-group-item ${decode(title,'合同','active','')}">合同</a> 
+					<%}%>
+					<%if(shiro.hasPermission("house:building:view")){%>
+					<a href="/lease/contractType" class="list-group-item ${decode(title,'合同类型','active','')}">合同类型</a>
+					<%}%>
+				</div>

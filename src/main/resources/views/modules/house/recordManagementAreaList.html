@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'房产信息管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'房产信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/house/leftnavbar.html",{title:'记录管理区'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+				<%if(shiro.hasPermission("house:recordManagementArea:view")){%>
+					<li class="active"><a href="/house/recordManagementArea">记录管理区列表</a></li>
+				<%}%>
+				<%if(shiro.hasPermission("house:recordManagementArea:edit")){%>
+					<li><a href="/house/recordManagementArea/form">记录管理区添加</a></li>
+				<%}%>
+				</ul>
+				
+				<form id="searchForm" class="breadcrumb form-inline" action="/house/recordManagementArea" method="post">
+					<div class="form-group form-group-padding">
+						<label for="userId">用户：</label> <input type="text" class="form-control"
+							id="userId" name="userId" placeholder="用户" value="${recordManagementArea.userId!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="name">名称：</label> <input type="text" class="form-control"
+							id="name" name="name" placeholder="名称" value="${recordManagementArea.name!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="address">地址：</label> <input type="text" class="form-control"
+							id="address" name="address" placeholder="地址" value="${recordManagementArea.address!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="remarks">备注：</label> <input type="text" class="form-control"
+							id="remarks" name="remarks" placeholder="备注" value="${recordManagementArea.remarks!}">
+					</div>
+					<button type="submit" class="btn btn-primary">查询</button>
+				</form>
+
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-condensed">
+						<tr>
+							<th>名称</th>
+							<th>用户</th>
+							<th>地址</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+						<%
+						for(recordManagementArea in page.records){
+						%>
+						<tr>
+							<td>${recordManagementArea.name!}</td>
+							<td>${recordManagementArea.userInf.name!}</td>
+							<td>${recordManagementArea.address!}</td>
+							<td>${recordManagementArea.remarks!}</td>
+							<td> 
+							<%if(shiro.hasPermission("house:recordManagementArea:edit")){%>
+							<a href="/house/recordManagementArea/form?id=${recordManagementArea.id!}">修改</a> 
+							<%}%>
+							<%if(shiro.hasPermission("house:recordManagementArea:delete")){%>
+							<a href="javascript:void(0);"
+								onclick="del('/house/recordManagementArea/delete?id=${recordManagementArea.id!}',1);">删除</a>
+							<%}%>
+							</td>
+
+						</tr>
+						<%
+						}
+						%>
+						
+					</table>
+					<% include("/views/layouts/pageNavigation.html",{url:'/house/recordManagementArea'}){} %>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+	
+	<!-- <button id="button">按钮</button>
+	<script type="text/javascript">
+	$("#button").click(function(){
+        var newUrl = '/house/recordManagementArea?pageNo=1';    //设置新提交地址
+        $("#searchForm").attr('action',newUrl);    //通过jquery为action属性赋值
+        $("#searchForm").submit();    //提交ID为myform的表单
+    })
+	</script> -->
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'租赁管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'租赁管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/lease/leftnavbar.html",{title:'合同类型'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+				<%if(shiro.hasPermission("lease:contractType:view")){%>
+					<li class="active"><a href="/lease/contractType">合同类型列表</a></li>
+				<%}%>
+				<%if(shiro.hasPermission("lease:contractType:edit")){%>
+					<li><a href="/lease/contractType/form">合同类型添加</a></li>
+				<%}%>
+				</ul>
+				
+				<form id="searchForm" class="breadcrumb form-inline" action="/lease/contractType" method="post">
+					<div class="form-group form-group-padding">
+						<label for="name">名称：</label> <input type="text" class="form-control"
+							id="name" name="name" placeholder="名称" value="${contractType.name!}">
+					</div>
+					<div class="form-group form-group-padding">
+						<label for="remarks">备注：</label> <input type="text" class="form-control"
+							id="remarks" name="remarks" placeholder="备注" value="${contractType.remarks!}">
+					</div>
+					<button type="submit" class="btn btn-primary">查询</button>
+				</form>
+
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-condensed">
+						<tr>
+							<th>名称</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+						<%
+						for(contractType in page.records){
+						%>
+						<tr>
+							<td>${contractType.name!}</td>
+							<td>${contractType.remarks!}</td>
+							<td> 
+							<%if(shiro.hasPermission("lease:contractType:edit")){%>
+							<a href="/lease/contractType/form?id=${contractType.id!}">修改</a> 
+							<%}%>
+							<%if(shiro.hasPermission("lease:contractType:delete")){%>
+							<a href="javascript:void(0);"
+								onclick="del('/lease/contractType/delete?id=${contractType.id!}',1);">删除</a>
+							<%}%>
+							</td>
+
+						</tr>
+						<%
+						}
+						%>
+						
+					</table>
+					<% include("/views/layouts/pageNavigation.html",{url:'/lease/contractType'}){} %>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

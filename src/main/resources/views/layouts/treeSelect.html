@@ -1,0 +1,73 @@
+
+	<script type="text/javascript">
+	    var setting = {
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+
+		var zNodes =[
+			<% for(entity in page.records){ %>
+			{ id:"${entity.id}", pId:"${entity.parentId}", name:"${entity.name}"},
+			<%
+			}
+			%>
+		];
+
+		var tree;
+		$(document).ready(function(){
+			tree =$.fn.zTree.init($("#tree"), setting, zNodes);
+			$("#sear").bind("input propertychange", search);
+		});
+		function select(){
+			var nodes = [];
+			nodes = tree.getSelectedNodes();
+			$("#parentName").val(nodes[0].name);
+			$("#parentId").val(nodes[0].id);
+			$('#parent').modal('hide');
+		}
+		function iclear(){
+			$("#parentName").val("");
+			$("#parentId").val("");
+		}
+		function showModel(){
+			$('#parent').modal('show');
+		}
+		function search() {
+			var value = $("#sear").val();
+			var nodes = tree.getNodes();
+			hideAllNode(nodes);
+			nodeList = tree.getNodesByParamFuzzy("name", value);
+			updateNodes(nodeList);
+		}
+		
+		//隐藏所有节点
+		function hideAllNode(nodes){			
+			nodes = tree.transformToArray(nodes);
+			for(var i=nodes.length-1; i>=0; i--) {
+				tree.hideNode(nodes[i]);
+			}
+		}
+		//更新节点状态
+		function updateNodes(nodeList) {
+			tree.showNodes(nodeList);
+			for(var i=0, l=nodeList.length; i<l; i++) {
+				
+				//展开当前节点的父节点
+				tree.showNode(nodeList[i].getParentNode()); 
+				//tree.expandNode(nodeList[i].getParentNode(), true, false, false);
+				//显示展开符合条件节点的父节点
+				while(nodeList[i].getParentNode()!=null){
+					tree.expandNode(nodeList[i].getParentNode(), true, false, false);
+					nodeList[i] = nodeList[i].getParentNode();
+					tree.showNode(nodeList[i].getParentNode());
+				}
+				//显示根节点
+				tree.showNode(nodeList[i].getParentNode());
+				//展开根节点
+				tree.expandNode(nodeList[i].getParentNode(), true, false, false);
+			}
+		}
+	</script>

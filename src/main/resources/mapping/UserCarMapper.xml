@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wya1.iproperty.mapper.UserCarMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.wya1.iproperty.entity.UserCar">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="picture" property="picture" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<resultMap id="MBaseResultMap"
+		type="com.wya1.iproperty.entity.UserCar">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="picture" property="picture" />
+		<result column="remarks" property="remarks" />
+		<association property="userInf"
+			javaType="com.wya1.iproperty.entity.UserInf">
+			<id property="id" column="user_id" />
+			<result property="name" column="user_inf_name" />
+		</association>
+	</resultMap>
+
+	<select id="selectUserCar" resultMap="MBaseResultMap">
+		select
+		user_car.id,user_car.gmt_create,user_car.gmt_modified,user_car.is_deleted,user_car.user_id,user_car.name,user_car.plate_number,user_car.picture,user_car.remarks,user_inf.name
+		user_inf_name from user_car,user_inf where
+		user_car.user_id=user_inf.id
+		<if test="name != null and name != ''">
+			AND user_car.name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="plateNumber != null and plateNumber != ''">
+			AND user_car.plate_number LIKE concat('%',#{plateNumber},'%')
+		</if>
+		<if test="remarks != null and remarks != ''">
+			AND user_car.remarks LIKE concat('%',#{remarks},'%')
+		</if>
+		<if test="userInf != null">
+			AND user_inf.name LIKE concat('%',#{userInf.name},'%')
+		</if>
+	</select>
+	<select id="selectById" resultMap="MBaseResultMap">
+		select
+		user_car.id,user_car.gmt_create,user_car.gmt_modified,user_car.is_deleted,user_car.user_id,user_car.name,user_car.plate_number,user_car.picture,user_car.remarks,user_inf.name
+		user_inf_name from user_car,user_inf where
+		user_car.user_id=user_inf.id
+			AND user_car.id=#{id}
+	</select>
+</mapper>

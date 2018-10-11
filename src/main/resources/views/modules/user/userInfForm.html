@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'客户信息管理'}){}
+%>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'客户信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3"><%
+				include("/views/modules/user/leftnavbar.html",{title:'客户基本信息'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/user/userInf">客户基本信息列表</a></li>
+					<li class="active"><a href="/user/userInf/form">客户基本信息${isEmpty(userInf.id)?"添加":"修改"}</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form id="form" class="form-horizontal" action="/user/userInf/save"
+						method="post">
+						<input type="hidden" name="id" value="${userInf.id!}">
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">姓名</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userInf.name!}" name="name" id="name"
+									placeholder="姓名" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="idCard" class="col-sm-2 control-label">身份证</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userInf.idCard!}" name="idCard"
+									id="idCard" placeholder="身份证" required="required"
+									autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="tel" class="col-sm-2 control-label">电话</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userInf.tel!}" name="tel" id="tel"
+									placeholder="电话" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="picture" class="col-sm-2 control-label">图片</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userInf.picture!}" name="picture"
+									id="picture" placeholder="图片" required="required"
+									autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<textarea id="remarks" name="remarks" maxlength="255"
+									class="form-control input-xlarge" rows="4">${userInf.remarks!}</textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="userCar" class="col-sm-2 control-label">车辆</label>
+							<div class="col-sm-10">
+								<table id="contentTable"
+									class="table table-striped table-bordered table-condensed">
+									<thead>
+										<tr>
+											<th>名称</th>
+											<th>车牌号</th>
+											<th>图片</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="testDataChildList">
+
+										<% for(userCar in userInf.userCars!){ %>
+										<tr>
+											<td>${userCar.name!}</td>
+											<td>${userCar.plateNumber!}</td>
+											<td>${userCar.picture!}</td>
+											<td>${userCar.remarks!}</td>
+											<td><%if(shiro.hasPermission("user:userCar:edit")){%>
+												<a href="javascript:void(0);"
+												onclick="saveEdit2('/user/userInf/save2','/user/userCar/userInf/form?id=${userCar.id!}');">修改</a>
+												<%}%> <%if(shiro.hasPermission("user:userCar:delete")){%> <a
+												href="javascript:void(0);"
+												onclick="del('/user/userCar/delete?id=${userCar.id!}',1);">删除</a>
+												<%}%>
+											</td>
+
+										</tr>
+										<%}%>
+									</tbody>
+									<tfoot>
+										<%if(shiro.hasPermission("user:userCar:edit")){%>
+										<tr>
+											<td colspan="5"><a href="javascript:void(0);"
+												onclick="saveEdit('/user/userInf/save2','/user/userCar/userInf/form?userId=');"
+												class="btn btn-default">新增</a></td>
+										</tr>
+										<%}%>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="userPet" class="col-sm-2 control-label">宠物</label>
+							<div class="col-sm-10">
+								<table id="contentTable"
+									class="table table-striped table-bordered table-condensed">
+									<thead>
+										<tr>
+											<th>名称</th>
+											<th>图片</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="testDataChildList">
+
+										<% for(userPet in userInf.userPets!){ %>
+										<tr>
+											<td>${userPet.name!}</td>
+											<td>${userPet.picture!}</td>
+											<td>${userPet.remarks!}</td>
+											<td><%if(shiro.hasPermission("user:userPet:edit")){%> 
+												<a href="javascript:void(0);"
+												onclick="saveEdit2('/user/userInf/save2','/user/userPet/userInf/form?id=${userPet.id!}');">修改</a>
+												 <%}%>
+												<%if(shiro.hasPermission("user:userPet:delete")){%> <a
+												href="javascript:void(0);"
+												onclick="del('/user/userPet/delete?id=${userPet.id!}',1);">删除</a>
+												<%}%>
+											</td>
+
+										</tr>
+										<%}%>
+									</tbody>
+									<tfoot>
+										<%if(shiro.hasPermission("user:userPet:edit")){%>
+										<tr>
+											<td colspan="5"><a href="javascript:void(0);"
+												onclick="saveEdit('/user/userInf/save2','/user/userPet/userInf/form?userId=');"
+												class="btn btn-default">新增</a></td>
+										</tr>
+										<%}%>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="userMemberFamilie" class="col-sm-2 control-label">家庭成员</label>
+							<div class="col-sm-10">
+								<table id="contentTable"
+									class="table table-striped table-bordered table-condensed">
+									<thead>
+										<tr>
+											<th>名称</th>
+											<th>备注</th>
+											<th>关系</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="testDataChildList">
+
+										<% for(userMemberFamilie in userInf.userMemberFamilies!){ %>
+										<tr>
+											<td>${userMemberFamilie.userInf.name!}</td>
+											<td>${userMemberFamilie.userInf.remarks!}</td>
+											<td>${userMemberFamilie.relationship!}</td>
+											<td><%if(shiro.hasPermission("user:userMemberFamily:edit")){%> 
+												<a href="javascript:void(0);"
+												onclick="saveEdit2('/user/userInf/save2','/user/userMemberFamily/userInf/form?id=${userMemberFamilie.userInf.id!}');">修改</a>
+												 <%}%>
+												<%if(shiro.hasPermission("user:userMemberFamily:delete")){%> <a
+												href="javascript:void(0);"
+												onclick="del('/user/userMemberFamily/delete?id=${userMemberFamilie.userInf.id!}',1);">删除</a>
+												<%}%>
+											</td>
+
+										</tr>
+										<%}%>
+									</tbody>
+									<tfoot>
+										<%if(shiro.hasPermission("user:userPet:edit")){%>
+										<tr>
+											<td colspan="5"><a href="javascript:void(0);"
+												onclick="saveEdit('/user/userInf/save2','/user/userMemberFamily/userInf/form?userId=');"
+												class="btn btn-default">新增</a></td>
+										</tr>
+										<%}%>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<a href="/user/userInf" class="btn btn-default">返 回</a>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

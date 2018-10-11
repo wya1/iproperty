@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'客户信息管理'}){}
+%>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'客户信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3"><%
+				include("/views/modules/user/leftnavbar.html",{title:'客户基本信息'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/user/userInf">客户基本信息列表</a></li>
+					<li><a href="/user/userInf/form">客户基本信息添加</a></li>
+					<li class="active"><a href="">客户家庭成员信息${isEmpty(userMemberFamily.userIdB)?"添加":"修改"}</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal"
+						action="/user/userMemberFamily/userInf/save" method="post">
+						<input type="hidden" name="userIdA"
+							value="${userMemberFamily.userIdA!}"> <input
+							type="hidden" name="userIdB" value="${userMemberFamily.userIdB!}">
+						<input type="hidden" name="userId" value="${userInf.id!}">
+						<div class="form-group">
+							<label for="userId" class="col-sm-2 control-label">用户</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userInf.name!}" id="userId"
+									placeholder="用户" required="required" autocomplete="off"
+									disabled>
+							</div>
+						</div>
+						<hr style="border: 1px dotted #999" />
+						<div class="form-group">
+							<label for="userId" class="col-sm-2 control-label">家庭成员</label> <input
+								type="hidden" name="userInf.id"
+								value="${userMemberFamily.userInf.id!}">
+							<div class="col-sm-5"></div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">姓名</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userMemberFamily.userInf.name!}"
+									name="userInf.name" id="name" placeholder="姓名"
+									required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="idCard" class="col-sm-2 control-label">身份证</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userMemberFamily.userInf.idCard!}"
+									name="userInf.idCard" id="idCard" placeholder="身份证"
+									required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="tel" class="col-sm-2 control-label">电话</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userMemberFamily.userInf.tel!}"
+									name="userInf.tel" id="tel" placeholder="电话"
+									required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="picture" class="col-sm-2 control-label">图片</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userMemberFamily.userInf.picture!}"
+									name="userInf.picture" id="picture" placeholder="图片"
+									required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<textarea id="userInf.remarks" name="userInf.remarks"
+									maxlength="255" class="form-control input-xlarge" rows="4">${userMemberFamily.userInf.remarks!}</textarea>
+							</div>
+						</div>
+						<hr style="border: 1px dotted #999" />
+						<div class="form-group">
+							<label for="userId" class="col-sm-2 control-label">关系</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userMemberFamily.relationship!}"
+									id="userId" name="relationship" placeholder="关系"
+									required="required" autocomplete="off">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<%if(shiro.hasPermission("user:userMemberFamily:edit")){%>
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<%}%> <a class="btn btn-default"
+									href="/user/userInf/form?id=${userInf.id!}">返 回</a>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wya1.iproperty.mapper.UserInfMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.wya1.iproperty.entity.UserInf">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="name" property="name" />
+		<result column="id_card" property="idCard" />
+		<result column="tel" property="tel" />
+		<result column="picture" property="picture" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<resultMap id="MBaseResultMap"
+		type="com.wya1.iproperty.entity.UserInf">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="name" property="name" />
+		<result column="id_card" property="idCard" />
+		<result column="tel" property="tel" />
+		<result column="picture" property="picture" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<select id="selectUserInf" resultMap="MBaseResultMap">
+		select
+		id,gmt_create,gmt_modified,is_deleted,name,id_card,tel,picture,remarks from user_inf where
+		is_deleted=0
+		<if test="name != null and name != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="idCard != null and idCard != ''">
+			AND id_card LIKE
+			concat('%',#{idCard},'%')
+		</if>
+		<if test="tel != null and tel != ''">
+			AND tel LIKE concat('%',#{tel},'%')
+		</if>
+		<if test="remarks != null and remarks != ''">
+			AND remarks LIKE concat('%',#{remarks},'%')
+		</if>
+	</select>
+</mapper>

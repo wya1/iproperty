@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'房产信息管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'房产信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/house/leftnavbar.html",{title:'大楼配置'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+				<%if(shiro.hasPermission("house:buildingConfigure:view")){%>
+					<li class="active"><a href="/house/buildingConfigure">大楼配置列表</a></li>
+				<%}%>
+				<%if(shiro.hasPermission("house:buildingConfigure:edit")){%>
+					<li><a href="/house/buildingConfigure/form">大楼配置添加</a></li>
+				<%}%>
+				</ul>
+
+				<div class="table-responsive table-padding-top">
+					<table class="table table-striped table-bordered table-condensed">
+						<tr>
+							<th>大楼</th>
+							<th>名称</th>
+							<th>数量</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+						<%
+						for(buildingConfigure in page.records){
+						%>
+						<tr>
+							<td>${buildingConfigure.buildingId}</td>
+							<td>${buildingConfigure.name}</td>
+							<td>${buildingConfigure.number}</td>
+							<td>${buildingConfigure.remarks}</td>
+							<td> 
+							<%if(shiro.hasPermission("house:buildingConfigure:edit")){%>
+							<a href="/house/buildingConfigure/form?id=${buildingConfigure.id}">修改</a> 
+							<%}%>
+							<%if(shiro.hasPermission("house:buildingConfigure:delete")){%>
+							<a href="javascript:void(0);"
+								onclick="del('/house/buildingConfigure/delete?id=${buildingConfigure.id}',1);">删除</a>
+							<%}%>
+							</td>
+
+						</tr>
+						<%
+						}
+						%>
+						
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

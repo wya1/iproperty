@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'租赁管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'租赁管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/lease/leftnavbar.html",{title:'合同'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/lease/contract">合同列表</a></li>
+					<li class="active"><a href="/lease/contract/form">合同${isEmpty(contract.id)?"添加":"修改"}</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal" action="/lease/contract/save"
+						method="post">
+						<input type="hidden" name="id" value="${contract.id!}">
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">名称</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contract.name!}"
+									name="name" id="name" placeholder="名称" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="contractTypeId" class="col-sm-2 control-label">合同类型</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contract.contractTypeId!}"
+									name="contractTypeId" id="contractTypeId" placeholder="合同类型" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="content" class="col-sm-2 control-label">内容</label>
+							<div class="col-sm-10">
+								<textarea class="form-control input-xlarge"
+									maxlength="255"
+									name="content" id="content" placeholder="内容">${contract.content!}</textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="electronicContractPictures" class="col-sm-2 control-label">电子合同图片</label>
+							<div class="col-sm-5">
+								<input type="hidden" class="form-control input-xlarge"
+									maxlength="255" value="${contract.electronicContractPictures!}"
+									name="electronicContractPictures" id="electronicContractPictures" placeholder="电子合同图片" required="required" autocomplete="off">
+								<img height="100px" alt="" src="/upload/a451483b801542d3b1cbdf1d865ec0d2.png" onclick="window.open('/upload/a451483b801542d3b1cbdf1d865ec0d2.png')">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="firstParty" class="col-sm-2 control-label">甲方</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contract.firstParty!}"
+									name="firstParty" id="firstParty" placeholder="甲方" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="secondParty" class="col-sm-2 control-label">乙方</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contract.secondParty!}"
+									name="secondParty" id="secondParty" placeholder="乙方" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="signingDate" class="col-sm-2 control-label">签订日期</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contract.signingDate!,dateFormat='yyyy-MM-dd'}"
+									name="signingDate" id="signingDate" placeholder="签订日期" required="required" autocomplete="off" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="effectiveDate" class="col-sm-2 control-label">生效日期</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contract.effectiveDate!,dateFormat='yyyy-MM-dd'}"
+									name="effectiveDate" id="effectiveDate" placeholder="生效日期" required="required" autocomplete="off" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="expiredDate" class="col-sm-2 control-label">失效日期</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contract.expiredDate!,dateFormat='yyyy-MM-dd'}"
+									name="expiredDate" id="expiredDate" placeholder="失效日期" required="required" autocomplete="off" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remindingAheadDay" class="col-sm-2 control-label">提醒提前到期天数</label>
+							<div class="col-sm-5">
+								<input type="number" class="form-control input-xlarge"
+									maxlength="255" value="${contract.remindingAheadDay!5}"
+									name="remindingAheadDay" id="remindingAheadDay" placeholder="提醒提前到期天数" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contract.remarks!}"
+									name="remarks" id="remarks" placeholder="备注" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+							    <%if(shiro.hasPermission("lease:contract:edit")){%>
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<%}%>
+								<input id="btnCancel" class="btn btn-default" type="button" value="返 回"
+									onclick="history.go(-1)" />
+							</div>
+						</div>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+	<% include("/views/layouts/ckeditor.html",{id:"content",uploadUrl:"/file/upload"}){} %>
+</body>
+</html>

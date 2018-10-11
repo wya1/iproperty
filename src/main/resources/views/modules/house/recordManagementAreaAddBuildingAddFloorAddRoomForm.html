@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'房产信息管理'}){}
+%>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'房产信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3"><%
+				include("/views/modules/house/leftnavbar.html",{title:'记录管理区'}){} %></div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/house/recordManagementArea">记录管理区列表</a></li>
+					<li><a href="/house/recordManagementArea/form?id=${room.floor.building.recordManagementAreaId!}">记录管理区修改</a></li>
+					<li><a href="/house/building/recordManagementArea/form?id=${room.floor.buildingId!}">大楼修改</a></li>
+					<li><a
+						href="/house/floor/recordManagementArea/form?id=${room.floorId!}">楼层修改</a></li>
+						
+					<li class="active"><a
+						href="/house/room/recordManagementArea/form?${isEmpty(room.id)?'floorId='+room.floorId:'id='+room.id}">房间${isEmpty(room.id)?"添加":"修改"}</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal"
+						action="/house/room/recordManagementArea/save" method="post">
+						<input type="hidden" name="id" value="${room.id!}">
+						<div class="form-group">
+							<label for="floorName" class="col-sm-2 control-label">楼层</label>
+							<div class="col-sm-5">
+								<input type="hidden" value="${room.floorId!}" name="floorId"> 
+								<input type="text"
+									class="form-control input-xlarge" maxlength="255"
+									value="${room.floor.name!}"
+									id="floorName" placeholder="楼层" required="required"
+									autocomplete="off" disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">名称</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${room.name!}" name="name" id="name"
+									placeholder="名称" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<input id="userId" type="hidden" name="userId"> <label
+								for="userName" class="col-sm-2 control-label">用户</label>
+							<div class="col-sm-5">
+								<input id="userName" type="hidden" class="bigdrop"
+									name="userName" style="width: 99%" value="${room.userInf.name!}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="idCard" class="col-sm-2 control-label">身份证</label>
+							<div class="col-sm-5">
+								<input id="idCard" class="form-control" name="idCard" disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${room.remarks!}" name="remarks"
+									id="remarks" placeholder="备注" required="required"
+									autocomplete="off">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<a class="btn btn-default"
+									href="/house/floor/recordManagementArea/form?id=${room.floorId!}">返
+									回</a>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+
+	<script type="text/javascript">
+		function movieFormatResult(movie) {
+			var markup = "<table class='movie-result'><tr>";
+			//markup += "<td><img width='50' height='50' src='"+movie.picture+"'/></td>";
+			markup += "<td><div >" + movie.name + "</div>";
+			markup += "<div>" + movie.idCard + "</div>";
+			markup += "<div>" + movie.tel + "</div>";
+			markup += "</td></tr></table>"
+			return markup;
+		}
+
+		function movieFormatSelection(movie) {
+			$("#userId").val(movie.id);
+			$("#idCard").val(movie.idCard)
+			//return "标题";
+			return movie.name;
+		}
+		$(document)
+				.ready(
+						function() {
+							$("#userName")
+									.select2(
+											{
+												placeholder : "选择用户",
+												minimumInputLength : 1,
+												ajax : {
+													//url: "http://api.rottentomatoes.com/api/public/v1.0/movies.json",
+													url : "/user/userInf/list2",
+													dataType : 'json',
+													quietMillis : 100,
+													data : function(term, page) { // page is the one-based page number tracked by Select2
+														return {
+															q : term, //search term
+															//page_limit: 10, // page size
+															page : page, // page number
+														//apikey: "ju6z9mjyajq2djue3gbvv26t" // please do not use so this example keeps working
+														};
+													},
+													results : function(data,
+															page) {
+														var more = (page * data.size) < data.total;
+														return {
+															results : data.records,
+															more : more
+														};
+													}
+												},
+												initSelection : function(
+														element, callback) {
+													var j = "{'idCard':'${room.userInf.idCard!}','name':'${room.userInf.name!}','id':'${room.userId!}'}";
+													var jj = eval("(" + j + ")");
+													callback(jj);
+												},
+												formatResult : movieFormatResult, // omitted for brevity, see the source of this page
+												formatSelection : movieFormatSelection, // omitted for brevity, see the source of this page
+												dropdownCssClass : "bigdrop", // apply css that makes the dropdown taller
+												escapeMarkup : function(m) {
+													return m;
+												} // we do not want to escape markup since we are displaying html in results
+											});
+						});
+	</script>
+</body>
+</html>

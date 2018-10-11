@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'房产信息管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'房产信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/house/leftnavbar.html",{title:'记录管理区配置'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/house/recordManagementAreaConfigure">记录管理区配置列表</a></li>
+					<li class="active"><a href="/house/recordManagementAreaConfigure/form">记录管理区配置添加</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal" action="/house/recordManagementAreaConfigure/save"
+						method="post">
+						<input type="hidden" name="id" value="${recordManagementAreaConfigure.id!}">
+						<div class="form-group">
+							<label for="recordManagementAreaId" class="col-sm-2 control-label">记录管理区</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${recordManagementAreaConfigure.recordManagementAreaId!}"
+									name="recordManagementAreaId" id="recordManagementAreaConfigure" placeholder="记录管理区" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">名称</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${recordManagementAreaConfigure.name!}"
+									name="name" id="recordManagementAreaConfigure" placeholder="名称" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="number" class="col-sm-2 control-label">数量</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${recordManagementAreaConfigure.number!}"
+									name="number" id="recordManagementAreaConfigure" placeholder="数量" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${recordManagementAreaConfigure.remarks!}"
+									name="remarks" id="recordManagementAreaConfigure" placeholder="备注" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<input id="btnCancel" class="btn btn-default" type="button" value="返 回"
+									onclick="history.go(-1)" />
+							</div>
+						</div>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

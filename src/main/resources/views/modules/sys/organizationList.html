@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'权限管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'权限管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="list-group">
+					<a href="/sys/organization" class="list-group-item active">组织机构管理</a>
+					<a href="/sys/role" class="list-group-item">角色管理</a> <a
+						href="/sys/permissions" class="list-group-item">权限管理</a>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="/sys/organization">组织机构列表</a></li>
+					<li><a href="/sys/organization/form">组织机构添加</a></li>
+				</ul>
+
+				<div class="table-responsive table-padding-top">
+					<table class="table table-striped table-bordered table-condensed"
+						id="treeTable">
+						<tr>
+							<th>名称</th>
+							<th>排序</th>
+							<th>操作</th>
+						</tr>
+						<% for(organization in page.records){ %>
+						<tr id="${organization.id}" pId="${organization.parentId}">
+							<td>${organization.name}</td>
+							<td>${organization.sort}</td>
+							<td> <a
+								href="/sys/organization/form?id=${organization.id}">修改</a> <a
+								href="javascript:void(0);"
+								onclick="del('/sys/organization/delete?id=${organization.id}',1);">删除</a> <a href="/sys/organization/form?parentId=${organization.id}">添加下级数据</a></td>
+							</td>
+
+						</tr>
+						<% } %>
+
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+	<script>
+	$(function(){
+	    var option = {
+	        theme:'default',
+	        expandLevel : 2
+	    };
+        $('#treeTable').treeTable(option);
+	});
+</script>
+</body>
+</html>

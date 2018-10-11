@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<% include("/views/include/head.html",{title:'登录'}){} %>
+<link href="/static/wya1/css/signin.css" rel="stylesheet">
+</head>
+<body>
+
+	<div class="container">
+
+		<form class="form-signin" action="login" method="post">
+			<h2 class="form-signin-heading">登录wya1账号</h2>
+			${error!}
+			<div class="form-group">
+				<label for="inputEmail" class="sr-only">手机/邮箱/用户名</label> <input
+					type="text" id="inputEmail" name="username" class="form-control"
+					placeholder="手机/邮箱/用户名" required autofocus>
+			</div>
+
+			<div class="form-group">
+				<label for="inputPassword" class="sr-only">Password</label> <input
+					type="password" id="inputPassword" name="password"
+					class="form-control" placeholder="密码" required>
+			</div>
+
+			<div class="input-group">
+				<input type="text" name="validateCode" autocomplete="off"
+					class="form-control" placeholder="验证码" required>
+				<div class="input-group-addon">
+					<img src="/ValidateCode"
+						onclick="this.src='/ValidateCode?'+new Date().getTime();"
+						width="70" height="26" />
+				</div>
+
+			</div>
+
+			<div class="checkbox">
+				<label> <input type="checkbox" name="rememberMe"
+					value="true"> 下次自动登录
+				</label>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+		</form>
+
+	</div>
+	<!-- /container -->
+	
+	<!-- <script type="text/javascript"
+		src="https://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script> -->
+</body>
+</html>

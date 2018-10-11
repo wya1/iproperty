@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'权限管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'权限管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="list-group">
+					<a href="/sys/organization" class="list-group-item active">组织机构管理</a>
+					<a href="/sys/role" class="list-group-item">角色管理</a> <a
+						href="/sys/permissions" class="list-group-item">权限管理</a>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/sys/organization">组织机构列表</a></li>
+					<li class="active"><a href="/sys/organization/form">组织机构添加</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal" action="/sys/organization/save"
+						method="post">
+						<input type="hidden" id="id" name="id" value="${organization.id!}">
+						<input type="hidden" id="parentId" name="parentId"
+							value="${organization.parentId!}">
+
+						<div class="form-group">
+							<label for="parentName" class="col-sm-2 control-label">上级父级:</label>
+							<div class="col-sm-5">
+								<div class="input-group">
+									<input type="text" class="form-control input-xlarge"
+										maxlength="255" value="${parent.name!}" name="parentName"
+										id="parentName" autocomplete="off" placeholder=""
+										onclick="showModel()"> <span class="input-group-addon"><span
+										class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">组织机构名</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${organization.name!}" name="name"
+									id="name" placeholder="组织机构名" required="required"
+									autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">角色</label>
+							<div class="col-sm-5">
+								<table
+									class="table table-striped table-bordered table-condensed">
+									<tr>
+										<th></th>
+										<th>英文名称</th>
+										<th>角色名称</th>
+									</tr>
+									<% for(role in roles){ %>
+									<tr>
+									<td><input
+									id="roleId${roleLP.index}" name="roleIds" class="required"
+									type="checkbox" value="${role.id}"<%
+									for(organizationRole in organizationRoles) {
+									print(decode(organizationRole.roleId,role.id,'checked="checked"',''));
+									} %> /></td>
+									<td>${role.role}</td>
+									<td>${role.description}</td>
+									</tr>
+									<%}%>
+								</table>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="sort" class="col-sm-2 control-label">排序：</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="sort"
+									value="${organization.sort!30}" name="sort" placeholder=""
+									required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<input id="btnCancel" class="btn btn-default" type="button" value="返 回"
+									onclick="history.go(-1)" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="parent" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">父级编号</h4>
+				</div>
+				<div class="modal-body">
+					<div class="input-group">
+						<input type="text" id="sear" class="form-control"> <span
+							class="input-group-btn">
+							<button type="button" class="btn btn-primary" onclick="search()">搜索</button>
+						</span>
+					</div>
+					<ul id="tree" class="ztree"></ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="select()">确定</button>
+					<button type="button" class="btn btn-default" onclick="iclear()">清除</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<% include("/views/include/jslibs.html"){} %> <%
+	include("/views/layouts/treeSelect.html"){} %>
+
+</body>
+</html>

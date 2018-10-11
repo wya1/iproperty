@@ -1,0 +1,14 @@
+				<div class="list-group">
+					<%if(shiro.hasPermission("house:recordManagementArea:view")){%>
+					<a href="/house/recordManagementArea" class="list-group-item ${decode(title,'记录管理区','active','')}">记录管理区</a> 
+					<%}%>
+					<%if(shiro.hasPermission("house:building:view")){%>
+					<a href="/house/building" class="list-group-item ${decode(title,'大楼','active','')}">大楼</a>
+					<%}%>
+					<%if(shiro.hasPermission("house:building:view")){%>
+					<a href="/house/floor" class="list-group-item ${decode(title,'楼层','active','')}">楼层</a>
+					<%}%>
+					<%if(shiro.hasPermission("house:room:view")){%>
+					<a href="/house/room" class="list-group-item ${decode(title,'房间','active','')}">房间</a>
+					<%}%>
+				</div>

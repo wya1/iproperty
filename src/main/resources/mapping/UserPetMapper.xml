@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wya1.iproperty.mapper.UserPetMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.wya1.iproperty.entity.UserPet">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="picture" property="picture" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<resultMap id="MBaseResultMap"
+		type="com.wya1.iproperty.entity.UserPet">
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="picture" property="picture" />
+		<result column="remarks" property="remarks" />
+		<association property="userInf"
+			javaType="com.wya1.iproperty.entity.UserInf">
+			<id property="id" column="user_id" />
+			<result property="name" column="user_inf_name" />
+		</association>
+	</resultMap>
+
+	<select id="selectUserPet" resultMap="MBaseResultMap">
+		select
+		user_pet.id,user_pet.gmt_create,user_pet.gmt_modified,user_pet.is_deleted,user_pet.user_id,user_pet.name,user_pet.picture,user_pet.remarks,user_inf.name user_inf_name from user_pet,user_inf where user_pet.user_id=user_inf.id
+	</select>
+</mapper>

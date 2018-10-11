@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'客户信息管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'客户信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<% include("/views/modules/user/leftnavbar.html",{title:'用户'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/user/user">用户列表</a></li>
+					<li class="active"><a href="/user/user/form">用户添加</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal" action="/user/user/save"
+						method="post">
+						<input type="hidden" name="id" value="${user.id!}">
+						<div class="form-group">
+							<label for="username" class="col-sm-2 control-label">登录名</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${user.username!}"
+									name="username" id="user" placeholder="登录名" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-sm-2 control-label">密码</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${user.password!}"
+									name="password" id="user" placeholder="密码" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="salt" class="col-sm-2 control-label">盐</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${user.salt!}"
+									name="salt" id="user" placeholder="盐" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="locked" class="col-sm-2 control-label">锁</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${user.locked!}"
+									name="locked" id="user" placeholder="锁" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<input id="btnCancel" class="btn btn-default" type="button" value="返 回"
+									onclick="history.go(-1)" />
+							</div>
+						</div>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

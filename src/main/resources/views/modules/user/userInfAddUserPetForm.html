@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'客户信息管理'}){}
+%>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'客户信息管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3"><%
+				include("/views/modules/user/leftnavbar.html",{title:'客户基本信息'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/user/userInf">客户基本信息列表</a></li>
+					<li><a href="/user/userInf/form">客户基本信息添加</a></li>
+					<li class="active"><a href="">客户宠物信息${isEmpty(userPet.id)?"添加":"修改"}</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal" action="/user/userPet/userInf/save"
+						method="post">
+						<input type="hidden" name="id" value="${userPet.id!}">
+						<div class="form-group">
+							<label for="userId" class="col-sm-2 control-label">用户</label>
+							<div class="col-sm-5">
+								<input type="hidden" name="userId" value="${userPet.userId!}">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userPet.userInf.name!}" id="userId"
+									placeholder="用户" required="required" autocomplete="off"
+									disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">名称</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userPet.name!}" name="name" id="name"
+									placeholder="名称" required="required" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="picture" class="col-sm-2 control-label">图片</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userPet.picture!}" name="picture"
+									id="picture" placeholder="图片" required="required"
+									autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${userPet.remarks!}" name="remarks"
+									id="remarks" placeholder="备注" required="required"
+									autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<%if(shiro.hasPermission("user:userPet:edit")){%>
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<%}%> <a class="btn btn-default"
+									href="/user/userInf/form?id=${userPet.userId!}">返 回</a>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+</body>
+</html>

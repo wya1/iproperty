@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head><% include("/views/include/head.html",{title:'租赁管理'}){} %>
+</head>
+<body>
+	<% include("/views/layouts/navbar.html",{title:'租赁管理'}){} %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3"><%
+				include("/views/modules/lease/leftnavbar.html",{title:'合同类型'}){} %>
+			</div>
+			<div class="col-sm-9">
+				<ul class="nav nav-tabs">
+					<li><a href="/lease/contractType">合同类型列表</a></li>
+					<li class="active"><a href="/lease/contractType/form">合同类型${isEmpty(contractType.id)?"添加":"修改"}</a></li>
+				</ul>
+
+				<div class="table-padding-top">
+					<form class="form-horizontal" action="/lease/contractType/save"
+						method="post">
+						<input type="hidden" name="id" value="${contractType.id!}">
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">名称</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contractType.name!}" name="name"
+									id="name" placeholder="名称" required="required"
+									autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="template" class="col-sm-2 control-label">模板</label>
+							<div class="col-sm-10">
+								<textarea id="template" name="template" rows="4"
+									style="width: 99%">${contractType.template!}</textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="remarks" class="col-sm-2 control-label">备注</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control input-xlarge"
+									maxlength="255" value="${contractType.remarks!}" name="remarks"
+									id="remarks" placeholder="备注" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<%if(shiro.hasPermission("lease:contractType:edit")){%>
+								<button type="submit" class="btn btn-primary">保 存</button>
+								<%}%> <input id="btnCancel" class="btn btn-default"
+									type="button" value="返 回" onclick="history.go(-1)" />
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<% include("/views/include/jslibs.html"){} %>
+	<% include("/views/layouts/ckeditor.html",{id:"template",uploadUrl:"/file/upload"}){} %>
+</body>
+</html>
