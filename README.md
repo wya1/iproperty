@@ -8,6 +8,3 @@
 
 # 授权协议
 本项目授权协议采用[Apache Licence, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
-
-# 联系方式
-微信:wya1wya1
